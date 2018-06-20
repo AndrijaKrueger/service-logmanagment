@@ -1,9 +1,6 @@
 package de.xcrossworx.service.logmanagment.model;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "LogMessages")
@@ -12,16 +9,20 @@ public class LogMessage extends BaseEntity{
 
     private String systemName;
 
-    private String logType;
+    @Enumerated(value = EnumType.STRING)
+    private LogType logType;
 
     private String logMethod;
 
     private String logMessage;
 
+    @Column(columnDefinition = "varchar(2048)")
     private String logData;
 
+    @Column(columnDefinition = "varchar(2048)")
     private String exMessage;
 
+    @Column(columnDefinition = "varchar(2048)")
     private String exStacktrace;
 
     public String getLogData() {
@@ -48,11 +49,11 @@ public class LogMessage extends BaseEntity{
         this.systemName = systemName;
     }
 
-    public String getLogType() {
+    public LogType getLogType() {
         return logType;
     }
 
-    public void setLogType(String logType) {
+    public void setLogType(LogType logType) {
         this.logType = logType;
     }
 
@@ -83,7 +84,7 @@ public class LogMessage extends BaseEntity{
     public LogMessage() {
     }
 
-    public LogMessage(String systemName, String logType, String logMethod, String logMessage, String logData, String exMessage, String exStacktrace) {
+    public LogMessage(String systemName, LogType logType, String logMethod, String logMessage, String logData, String exMessage, String exStacktrace) {
         this.systemName = systemName;
         this.logType = logType;
         this.logMethod = logMethod;

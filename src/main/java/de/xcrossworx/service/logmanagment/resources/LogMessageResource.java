@@ -1,7 +1,9 @@
 package de.xcrossworx.service.logmanagment.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import de.xcrossworx.service.logmanagment.handler.SearchDtoHandler;
 import de.xcrossworx.service.logmanagment.model.LogMessage;
+import de.xcrossworx.service.logmanagment.model.dto.SearchDto;
 import de.xcrossworx.service.logmanagment.persistence.LogDao;
 
 import javax.ws.rs.*;
@@ -24,11 +26,20 @@ public class LogMessageResource {
         return Response.ok().entity("Log Resource is here !!!!").build();
     }
 
-    @GET
+    @POST
     @Timed
     @Path("/getAll")
-    public Response getAll(){
-        return Response.ok().entity(logDao.getAll()).build();
+    public Response getAll(SearchDto searchDto){
+        if(searchDto == null) return Response.status(Response.Status.BAD_REQUEST).entity("SearchDto was null").build();
+
+        return Response.ok().entity(logDao.getAll(searchDto)).build();
+    }
+
+    @GET
+    @Timed
+    @Path("/getSearchDto")
+    public Response getSearchDto(){
+        return Response.ok().entity(SearchDtoHandler.getSearchDto()).build();
     }
 
     @POST

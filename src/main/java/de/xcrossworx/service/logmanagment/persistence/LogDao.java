@@ -1,7 +1,9 @@
 package de.xcrossworx.service.logmanagment.persistence;
 
 import de.xcrossworx.service.logmanagment.model.LogMessage;
+import de.xcrossworx.service.logmanagment.model.LogType;
 import de.xcrossworx.service.logmanagment.model.SystemName;
+import de.xcrossworx.service.logmanagment.model.dto.SearchDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,8 +24,11 @@ public class LogDao {
         logMessage.setModified(now);
     }
 
-    public List<LogMessage> getAll() {
+    public List<LogMessage> getAll(SearchDto searchDto) {
         EntityManager em = emf.createEntityManager();
+
+        // ToDo Filter the results with searchDto values in the database !!!!!!
+
         List<LogMessage> logs = em.createNamedQuery("Logs.findAll").getResultList();
         return logs;
     }
@@ -70,7 +75,7 @@ public class LogDao {
             }
 
         } catch (Exception ex){
-            saveLogMessage(new LogMessage("Log Service", "", "", "", "", "", ""));
+            saveLogMessage(new LogMessage("Log Service", LogType.ERROR, "", "", "", "", ""));
         }
     }
 
@@ -80,7 +85,7 @@ public class LogDao {
                 List<SystemName> systemNames = em.createNamedQuery("SystemName.findAll").getResultList();
                 return  systemNames;
             } catch (Exception ex){
-                saveLogMessage(new LogMessage("Log Service", "", "", "", "", "", ""));
+                saveLogMessage(new LogMessage("Log Service", LogType.ERROR, "", "", "", "", ""));
             }
         return null;
     }
